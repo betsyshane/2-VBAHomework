@@ -1,0 +1,159 @@
+Sub homeworkEasy():
+
+    For Each ws in Worksheets
+
+        Dim i, j, list, lastColumn As Integer
+        Dim lastRow as long
+ 
+        list = 2
+        
+        ws.Cells(1, 9).value = "Ticker"
+        ws.Cells(1,10).value = "Total Stock Volume"
+    
+        lastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+        lastColumn = ws.Cells(1, Columns.Count).End(xlToLeft).Column
+
+        ' pulling and printing the ticker names 
+        For i = 2 To lastRow
+    
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+                ws.Cells(list, 9).Value = ws.Cells(i, 1).Value
+                list = list + 1
+
+            End If
+
+        Next i
+        ' pulling and printing sums
+        For j = 2 To lastRow
+            Sum = 0
+            For i = 2 To lastRow
+                If ws.Cells(i, 1).Value = ws.Cells(j, 9).Value Then
+                Sum = Sum + ws.Cells(i, 7)
+                End If
+            Next i
+            ws.cells(j,10).value = sum
+        Next j
+  
+     Next ws   
+
+End Sub
+
+
+'that didn't work, so I went back to non-WS __________________________________
+
+
+    
+Sub HWeasy2():
+        Dim i, j, list As Integer
+        Dim lastRow, lastColumn as long
+ 
+        list = 2
+        
+        Cells(1, 9).value = "Ticker"
+        Cells(1, 10).value = "Total Stock Volume"
+    
+        lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+        lastColumn = Cells(1, Columns.Count).End(xlToLeft).Column
+
+        ' pulling and printing the ticker names 
+        For i = 2 To lastRow
+    
+            If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+                Cells(list, 9).Value = Cells(i, 1).Value
+                list = list + 1
+
+            End If
+
+        Next i
+        ' pulling and printing sums
+        For j = 2 To lastRow
+            Sum = 0
+            For i = 2 To lastRow
+                If Cells(i, 1).Value = Cells(j, 9).Value Then
+                Sum = Sum + ws.Cells(i, 7)
+                End If
+            Next i
+            cells(j,10).value = sum
+        Next j
+  
+
+'this approach also failed (just spinning beach ball, so I based on the CC solution instead of the code I had used for the CC)
+
+
+
+Sub summary():
+
+
+    Dim ticker As String
+
+    Dim tickerTotal As Long
+    tickerTotal = 0
+    Dim lastRow As Long
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+    Dim Summary_Table_Row As Integer
+    Summary_Table_Row = 2
+
+    For i = 2 To lastRow
+
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+        ticker = Cells(i, 1).Value
+        tickerTotal = tickerTotal + Cells(i, 7).Value
+
+        Range("I" & Summary_Table_Row).Value = ticker
+        Range("J" & Summary_Table_Row).Value = tickerTotal
+        Summary_Table_Row = Summary_Table_Row + 1
+    
+        tickerTotal = 0
+
+    Else
+
+        tickerTotal = tickerTotal + Cells(i, 7).Value
+
+    End If
+
+  Next i
+
+
+End Sub
+
+'the above worked at first for the testing, so I moved on to the WS method
+
+
+
+Sub summaryws():
+
+    For Each ws in Worksheets
+        Dim ticker As String
+
+        Dim tickerTotal As Long
+        tickerTotal = 0
+        Dim lastRow As Long
+        lastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+        Dim Summary_Table_Row As Integer
+        Summary_Table_Row = 2
+
+        For i = 2 To lastRow
+
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+                ticker = ws.Cells(i, 1).Value
+                tickerTotal = tickerTotal + ws.Cells(i, 7).Value
+                ws.Range("I" & Summary_Table_Row).Value = ticker
+                ws.Range("J" & Summary_Table_Row).Value = tickerTotal
+                Summary_Table_Row = Summary_Table_Row + 1
+                tickerTotal = 0
+
+            Else
+                tickerTotal = tickerTotal + ws.Cells(i, 7).Value
+
+            End If
+
+        Next i
+    Next ws
+
+End Sub
+
+'WS method created an overflow error; then I couldn't get the summary to work without the same error.  I'm not sure if I have a processing issue or something else but I've reached diminishing returns for the exercise.
